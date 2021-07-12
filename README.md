@@ -21,8 +21,8 @@ XXX denotes the path of the data set
 
 When using the pcam dataset, --lidc is cancelled
 # Data
-LIDC dataset:https://bitbucket.org/raghavian/lotenet_pytorch/src/master/data/lidc.zip
+LIDC dataset:  https://bitbucket.org/raghavian/lotenet_pytorch/src/master/data/lidc.zip
 
-PCam dataset：https://github.com/basveeling/pcam
+PCam dataset:  https://github.com/basveeling/pcam
 # Acknowledgements
 + Raghavendra Selvan, Erik B Dam, _Tensor Networks for Medical Image Classification_
