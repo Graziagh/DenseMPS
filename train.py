@@ -70,12 +70,10 @@ parser.add_argument('--batch_size', type=int, default=512, help='Batch size')
 parser.add_argument('--lr', type=float, default=5e-4, help='Learning rate')
 parser.add_argument('--l2', type=float, default=0, help='L2 regularisation')
 parser.add_argument('--aug', action='store_true', default=True, help='Use data augmentation')
-parser.add_argument('--data_path', type=str, default='../lidc/', help='Path to data.')
+parser.add_argument('--data_path', type=str, default='../pcam/', help='Path to data.')
 parser.add_argument('--bond_dim', type=int, default=5, help='MPS Bond dimension')
-parser.add_argument('--nChannel', type=int, default=1, help='Number of input channels')
+parser.add_argument('--nChannel', type=int, default=3, help='Number of input channels')
 
-parser.add_argument('--lidc', action='store_true',
-                    default=True, help='Using lidc dataset')
 
 args = parser.parse_args()
 
@@ -97,9 +95,7 @@ normTensor = 0.5 * torch.ones(args.nChannel)
 # meanTensor = [0.702447, 0.546243, 0.696453]
 # stdTensor = [0.238893, 0.282094, 0.216251]
 ### Data processing and loading....
-trans_valid = transforms.Compose([transforms.ToPILImage(),
-                                  transforms.ToTensor(),
-                                  transforms.Normalize(mean=normTensor, std=normTensor)])
+trans_valid = transforms.Compose([transforms.Normalize(mean=normTensor, std=normTensor)])
 
 if args.aug:
     trans_train = transforms.Compose([transforms.ToPILImage(),
@@ -113,22 +109,13 @@ else:
     trans_train = trans_valid
     print("No augmentation....")
 
-if args.lidc:
-    # Load processed LIDC data
-    dataset_train = load_data(split='Train', data_dir=args.data_path,
-                              transform=trans_train, rater=4)
-    dataset_valid = load_data(split='Valid', data_dir=args.data_path,
-                              transform=trans_valid, rater=4)
-    dataset_test = load_data(split='Test', data_dir=args.data_path,
-                             transform=trans_valid, rater=4)
-else:
-    # Load processed PCam data
-    dataset_train = load_data(split='train', data_dir=args.data_path,
-                              transform=trans_train, rater=1)
-    dataset_valid = load_data(split='valid', data_dir=args.data_path,
-                              transform=trans_valid, rater=1)
-    dataset_test = load_data(split='test', data_dir=args.data_path,
-                             transform=trans_valid, rater=1)
+
+dataset_train = load_data(split='train', data_dir=args.data_path,
+                          transform=trans_train, rater=1)
+dataset_valid = load_data(split='valid', data_dir=args.data_path,
+                          transform=trans_valid, rater=1)
+dataset_test = load_data(split='test', data_dir=args.data_path,
+                         transform=trans_valid, rater=1)
 
 
 num_train = len(dataset_train)
